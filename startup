@@ -1,0 +1,10 @@
+local API_DIR = "/api";
+
+-- Load APIs
+for _, file in pairs(fs.list(API_DIR)) do
+	---@diagnostic disable-next-line: undefined-field
+	os.loadAPI(API_DIR.."/"..file);
+end
+
+-- Set starting directory to /prog
+shell.run("cd /prog");
