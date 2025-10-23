@@ -1,9 +1,16 @@
 local API_DIR = "/api";
+local AUTORUN_DIR = "/autorun"
 
 -- Load APIs
 for _, file in pairs(fs.list(API_DIR)) do
 	---@diagnostic disable-next-line: undefined-field
 	os.loadAPI(API_DIR.."/"..file);
+end
+
+-- Run Autorun scripts
+for _, file in pairs(fs.list(AUTORUN_DIR)) do
+	---@diagnostic disable-next-line: undefined-field
+	shell.run(file)
 end
 
 -- Set starting directory to /prog
