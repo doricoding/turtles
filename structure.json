@@ -1,0 +1,11 @@
+{
+    "directory": {
+        "autorun": {"directory": {}, "file": ["a.lua"]},
+        "service": {"directory": {}, "file": ["gms.lua"]}, 
+        "home": {"directory": {}, "file": ["scan.lua", "format_config_file.lua"]},
+        "api": {"directory": {}, "file": ["config.lua"]}
+    },
+    "file": [
+        "startup"
+    ]
+}
