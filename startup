@@ -4,12 +4,12 @@ local HOME = "/home"
 
 -- Load APIs
 for _, file in pairs(fs.list(API_DIR)) do
-	os.loadAPI(API_DIR.."/"..file);
+	os.loadAPI(API_DIR.. "/" ..file);
 end
 
 -- Run Autorun scripts
 for _, file in pairs(fs.list(AUTORUN_DIR)) do
-	shell.run(AUTORUN_DIR .. " " .. file)
+	shell.run(AUTORUN_DIR .. "/" .. file)
 end
 
 -- Set starting directory to /prog
