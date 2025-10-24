@@ -2,6 +2,8 @@ local WGET = "wget"
 local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/"
 local FILENAME = "structure.json"
 
+-- todo fix issue when not in root directory
+
 local function getFiles()
     shell.run(WGET .. " " .. URL .. FILENAME)
 
@@ -15,7 +17,8 @@ local function getFiles()
     end
 end
 
-shell.run("set motd.enable false")
+-- doesnt work
+--shell.run("set motd.enable false")
 
 local rootFiles = fs.list("/")
 

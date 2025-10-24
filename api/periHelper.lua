@@ -1,5 +1,8 @@
 local modem = peripheral.find("modem")
 
+-- todo fix on startup load doesnt load the modem so its nil, get modem in function instead
+-- todo fix error on line 21
+
 -- get peripheral names without the need to recopy isWireless()
 local function getPeripheralNames()
     if not modem.isWireless() then
@@ -18,7 +21,7 @@ function getAvailablePeripheralNames(val)
     local suitablePeripherals = {}
 
     for i = 1, #peripheralsOnNetwork do
-        if #peripheralsOnNetwork[i]:sub(1, val) == val then
+        if string.sub(peripheralsOnNetwork[i], 1, #val) == val then
             table.insert(suitablePeripherals, peripheralsOnNetwork[i])
         end
     end
@@ -33,7 +36,7 @@ function getAvailablePeripherals(val)
     local suitablePeripherals = {}
 
     for i = 1, #peripheralsOnNetwork do
-        if #peripheralsOnNetwork[i]:sub(1, val) == val then
+        if string.sub(peripheralsOnNetwork[i], 1, #val) == val then
             table.insert(suitablePeripherals, peripheral.wrap(peripheralsOnNetwork[i]))
         end
     end
