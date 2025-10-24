@@ -32,13 +32,14 @@ if #rootFiles-1 > 0 then
                     end
                 end
                 getFiles()
+                shell.run("cd /home")
             else
-                print("This might cause issues")
-                getFiles()
+                print("then no bozo")                
             end
             break
         end
     end
 else
     getFiles()
+    shell.run("cd /home")
 end
