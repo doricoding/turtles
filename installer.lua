@@ -34,6 +34,7 @@ if #rootFiles-1 > 0 then
                 getFiles()
                 shell.run("cd /home")
             else
+                --todo sak nech sa opyta znova ze ci ce aj tak runnut install script
                 print("then no bozo")                
             end
             break

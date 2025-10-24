@@ -9,7 +9,7 @@ end
 
 -- Run Autorun scripts
 for _, file in pairs(fs.list(AUTORUN_DIR)) do
-	shell.run(file)
+	shell.run(AUTORUN_DIR .. " " .. file)
 end
 
 -- Set starting directory to /prog
