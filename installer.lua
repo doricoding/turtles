@@ -24,10 +24,10 @@ if #rootFiles-1 > 0 then
     while true do
         print("Type (Y/N) to delete all found files on the computer")
         local event, key, is_held = os.pullEvent("key")
-        if key == keys.y or key == keys.n then
-            if key == keys.y then
+        if (key == keys.y or key == keys.z) or key == keys.n then
+            if (key == keys.y or key == keys.z) then
                 for i, v in ipairs(rootFiles) do
-                    if not fs.isReadOnly(v) then
+                    if not fs.isReadOnly(v) and (v ~= "disk" and v ~= "rom") then
                         fs.delete(v)
                     end
                 end
