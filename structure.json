@@ -1,5 +1,5 @@
 [
-    "startup.lua",
+    "startup",
 
     "home/scan.lua",
     "home/format_config_file.lua",
