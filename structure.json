@@ -7,6 +7,7 @@
     "autorun/a.lua",
     
     "api/config.lua",
+    "api/periHelper.lua",
 
     "service/gms.lua"
 ]
