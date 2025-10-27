@@ -1,1 +1,0 @@
-print("hello from autorun/a.lua")
