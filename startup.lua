@@ -1,19 +1,26 @@
-local HOME = "/home"
+local HOME_DIR = "/home";
 local API_DIR = "/api";
-local AUTORUN_DIR = "/autorun"
+local AUTORUN_DIR = "/autorun";
+
+local apisToUnload = {
+    "help",
+    "rednet"
+};
 
 -- Unload default APIs
-os.unloadAPI("help");
-os.unloadAPI("rednet");
+for _, api in ipairs(apisToUnload) do os.unloadAPI(api); end
+
 -- Load custom APIs
-for _, file in pairs(fs.list(API_DIR)) do
-	os.loadAPI(API_DIR.."/"..file);
-end
+for _, file in ipairs(fs.list(API_DIR)) do os.loadAPI(API_DIR.."/"..file); end
 
 -- Run Autorun scripts
-for _, file in pairs(fs.list(AUTORUN_DIR)) do
-	shell.run(AUTORUN_DIR.."/"..file)
+if fs.exists(AUTORUN_DIR) then
+    for _, file in ipairs(fs.list(AUTORUN_DIR)) do
+        shell.run(AUTORUN_DIR.."/"..file);
+    end
+else
+    print("No autorun directory found");
 end
 
 -- Set starting directory to HOME
-shell.run("cd "..HOME);
+shell.run("cd "..HOME_DIR);

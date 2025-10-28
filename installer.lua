@@ -1,49 +1,61 @@
-local WGET = "wget"
-local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/"
-local FILENAME = "structure.json"
+local args = { ... };
 
--- todo fix issue when not in root directory
+local WGET = "wget";
+local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/";
+local FILENAME_STRUCTURE = "structure.json";
+
+local function isInList(val, list)
+    local res = false;
+    for _, v in ipairs(list) do res = res or (v == val) end
+    return res;
+end
 
 local function getFiles()
-    shell.run(WGET .. " " .. URL .. FILENAME)
+    shell.run("cd /");
+    shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
 
-    local file = fs.open(FILENAME, "r")
-    local structure = textutils.unserialiseJSON(file.readAll())
-    file.close()
+    local file = fs.open(FILENAME_STRUCTURE, "r");
+    local structure = textutils.unserialiseJSON(file.readAll());
+    file.close();
 
     for i, v in ipairs(structure) do
-        local command = WGET .. " " .. URL .. v .. " " .. v
-        shell.run(command)
+        local command = WGET.." "..URL..v.." "..v;
+        shell.run(command);
     end
 end
 
--- doesnt work
---shell.run("set motd.enable false")
-
-local rootFiles = fs.list("/")
+local rootFiles = fs.list("/");
 
 if #rootFiles-1 > 0 then
-    print("Files found in root")
+    print("Files found in root");
     while true do
-        print("Type (Y/N) to delete all found files on the computer")
-        local event, key, is_held = os.pullEvent("key")
+        print("Type (Y/N) to delete all found files on the computer");
+        local event, key, is_held = os.pullEvent("key");
         if (key == keys.y or key == keys.z) or key == keys.n then
             if (key == keys.y or key == keys.z) then
-                for i, v in ipairs(rootFiles) do
-                    if not fs.isReadOnly(v) and (v ~= "disk" and v ~= "rom") then
-                        fs.delete(v)
+                for _, v in ipairs(rootFiles) do
+                    if not fs.isReadOnly(v) and not isInList(v, {"rom", "disk"}) then
+                        fs.delete(v);
                     end
                 end
-                getFiles()
-                shell.run("cd /home")
+                getFiles();
             else
-                --todo sak nech sa opyta znova ze ci ce aj tak runnut install script
-                print("then no bozo")                
+                while true do
+                    print("Type (Y/N) to intall anyway");
+                    local event, key, is_held = os.pullEvent("key");
+                    if (key == keys.y or key == keys.z) or key == keys.n then
+                        if (key == keys.y or key == keys.z) then
+                            getFiles();
+                        else
+                            print("then no bozo");
+                        end
+                        break
+                    end
+                end
             end
             break
         end
     end
 else
-    getFiles()
-    shell.run("cd /home")
+    getFiles();
 end
