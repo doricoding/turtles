@@ -4,7 +4,6 @@ local WGET = "wget";
 local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/";
 local FILENAME_STRUCTURE = "structure.json";
 
---TODO: when in directory it will still delete itself
 local installerPath = shell.getRunningProgram()
 
 local function isInList(val, list)
@@ -15,6 +14,7 @@ end
 
 local function getFiles()
     shell.run("cd /");
+    fs.copy(installerPath, "installer.lua")
     shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
 
     local file = fs.open(FILENAME_STRUCTURE, "r");
