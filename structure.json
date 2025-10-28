@@ -3,7 +3,9 @@
 
     "home/scan.lua",
     "home/format_config_file.lua",
-    
+
+    "api/mixin/math.lua",
+
     "api/config.lua",
 	"api/image.lua",
     "api/periHelper.lua",
