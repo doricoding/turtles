@@ -22,5 +22,5 @@ else
     print("No autorun directory found");
 end
 
--- Set starting directory to HOME
+-- Set starting directory to HOME for convenience
 shell.run("cd "..HOME_DIR);

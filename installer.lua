@@ -4,6 +4,9 @@ local WGET = "wget";
 local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/";
 local FILENAME_STRUCTURE = "structure.json";
 
+--TODO: when in directory it will still delete itself
+local installerPath = shell.getRunningProgram()
+
 local function isInList(val, list)
     local res = false;
     for _, v in ipairs(list) do res = res or (v == val) end
@@ -31,10 +34,10 @@ if #rootFiles-1 > 0 then
     while true do
         print("Type (Y/N) to delete all found files on the computer");
         local event, key, is_held = os.pullEvent("key");
-        if (key == keys.y or key == keys.z) or key == keys.n then
-            if (key == keys.y or key == keys.z) then
+        if isInList(key, {keys.y, keys.z, keys.n}) then
+            if isInList(key, {keys.y, keys.z}) then
                 for _, v in ipairs(rootFiles) do
-                    if not fs.isReadOnly(v) and not isInList(v, {"rom", "disk"}) then
+                    if not fs.isReadOnly(v) and not isInList(v, {"rom", "disk", installerPath}) then
                         fs.delete(v);
                     end
                 end
@@ -43,11 +46,11 @@ if #rootFiles-1 > 0 then
                 while true do
                     print("Type (Y/N) to intall anyway");
                     local event, key, is_held = os.pullEvent("key");
-                    if (key == keys.y or key == keys.z) or key == keys.n then
-                        if (key == keys.y or key == keys.z) then
+                    if isInList(key, {keys.y, keys.z, keys.n}) then
+                        if isInList(key, {keys.y, keys.z}) then
                             getFiles();
                         else
-                            print("then no bozo");
+                            print("Cancelling installation");
                         end
                         break
                     end
