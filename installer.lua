@@ -6,6 +6,8 @@ local FILENAME_STRUCTURE = "structure.json";
 
 local installerPath = shell.getRunningProgram()
 
+fs.copy(installerPath, "installer.lua")
+
 local function isInList(val, list)
     local res = false;
     for _, v in ipairs(list) do res = res or (v == val) end
@@ -14,7 +16,6 @@ end
 
 local function getFiles()
     shell.run("cd /");
-    fs.copy(installerPath, "installer.lua")
     shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
 
     local file = fs.open(FILENAME_STRUCTURE, "r");
