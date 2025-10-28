@@ -6,7 +6,7 @@ local FILENAME_STRUCTURE = "structure.json";
 
 local installerPath = shell.getRunningProgram()
 
-fs.copy(installerPath, "installer.lua")
+fs.copy(installerPath, "/installer.lua")
 
 local function isInList(val, list)
     local res = false;
