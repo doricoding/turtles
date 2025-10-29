@@ -1,10 +1,10 @@
-local modem = peripheral.find("modem")
-
--- todo fix on startup load doesnt load the modem so its nil, get modem in function instead
--- todo fix error on line 21
+local modem = nil
 
 -- get peripheral names without the need to recopy isWireless()
 local function getPeripheralNames()
+    if modem == nil then
+        modem = peripheral.find("modem")
+    end
     if not modem.isWireless() then
         local peripheralsOnNetwork = modem.getNamesRemote()
         return peripheralsOnNetwork
@@ -14,7 +14,7 @@ local function getPeripheralNames()
 end
 
 -- returns all peripheral names where name start with val
-function getAvailablePeripheralNames(val)
+function peripheral.getPeripheralNamesStartingWith(val)
 
     local peripheralsOnNetwork = getPeripheralNames()
     if peripheralsOnNetwork == nil then return nil end
@@ -30,7 +30,7 @@ function getAvailablePeripheralNames(val)
 end
 
 -- returns all peripherals where name start with val
-function getAvailablePeripherals(val)
+function peripheral.getPeripheralsStartingWith(val)
     local peripheralsOnNetwork = getPeripheralNames()
     if peripheralsOnNetwork == nil then return nil end
     local suitablePeripherals = {}

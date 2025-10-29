@@ -33,6 +33,7 @@ end
 
 local rootFiles = fs.list("/");
 
+-- #rootFiles - rom - installer.lua
 if #rootFiles-2 > 0 then
     print("Files found in root");
     while true do

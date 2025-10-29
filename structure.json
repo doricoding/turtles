@@ -5,10 +5,11 @@
     "home/format_config_file.lua",
 
     "api/mixin/math.lua",
+    "api/mixin/peripheral.lua",
 
     "api/config.lua",
-	"api/image.lua",
-    "api/periHelper.lua",
+    "api/image.lua",
 
-    "service/gms.lua"
+    "service/gms.lua",
+    "service/player_relay_with_greet.lua"
 ]
