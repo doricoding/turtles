@@ -5,8 +5,11 @@ local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/mai
 local FILENAME_STRUCTURE = "structure.json";
 
 local installerPath = shell.getRunningProgram()
+local desiredInstallerPath = "/installer.lua"
 
-fs.copy(installerPath, "/installer.lua")
+if not fs.exists(desiredInstallerPath) then
+    fs.copy(installerPath, desiredInstallerPath)
+end
 
 local function isInList(val, list)
     local res = false;
@@ -30,7 +33,7 @@ end
 
 local rootFiles = fs.list("/");
 
-if #rootFiles-1 > 0 then
+if #rootFiles-2 > 0 then
     print("Files found in root");
     while true do
         print("Type (Y/N) to delete all found files on the computer");

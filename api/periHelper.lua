@@ -31,7 +31,7 @@ end
 
 -- returns all peripherals where name start with val
 function getAvailablePeripherals(val)
-    local peripheralsOnNetwork = getPeripheralNames
+    local peripheralsOnNetwork = getPeripheralNames()
     if peripheralsOnNetwork == nil then return nil end
     local suitablePeripherals = {}
 
