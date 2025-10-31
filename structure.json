@@ -11,5 +11,6 @@
     "api/image.lua",
 
     "service/gms.lua",
-    "service/player_relay_with_greet.lua"
+    "service/player_relay_with_greet.lua",
+    "service/simple_autocraft_scheduler.lua"
 ]
