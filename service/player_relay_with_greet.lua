@@ -15,7 +15,7 @@ local greetMessages = {
  
 print("Prog started range_toggle.lua")
  
-function updateStatus(val)
+local function updateStatus(val)
     if val == 0 then
         relay.setOutput(RELAY_OUT_SIDE, true)
     else
