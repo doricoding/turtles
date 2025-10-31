@@ -8,6 +8,9 @@ local apisToUnload = {
     "rednet"
 };
 
+-- Force startup to start in root
+shell.run("cd /")
+
 -- Unload default APIs
 for _, api in pairs(apisToUnload) do
 	os.unloadAPI(api);
