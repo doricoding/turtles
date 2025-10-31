@@ -33,15 +33,18 @@ local function wrapNum(val)
 end
 
 local ENTRY_DEFAULT_CONFIG = {
-    {
-        name = "minecraft:oak_planks",
-        amount = 32
+    ["enabled"] = true,
+    ["entries"] = {
+        { name = "minecraft:oak_planks", amount = 32 },
+        { name = "minecraft:charcoal", amount = 64 }
     }
 }
 
-config.save(ENTRY_DEFAULT_CONFIG, ENTRY_DEFAULT_CONFIG)
+config.default(ENTRY_CONFIG, ENTRY_DEFAULT_CONFIG)
+--config.save(ENTRY_CONFIG, ENTRY_DEFAULT_CONFIG)
 
-local items = config.load(ENTRY_DEFAULT_CONFIG)
+local config = config.load(ENTRY_CONFIG)
+local items = config.entries
 
 while true do
     local failed = {};
@@ -53,14 +56,18 @@ while true do
         if (curItem ~= nil) and (curItem.amount < item.amount) then
                 if not rs.isItemCrafting(itemEntry) then
                     local craftTask = { name = item.name, count = (item.amount - curItem.amount) }
-                    local craftResult = rs.craftItem(craftTask);
-                    if not craftResult then
-                        table.insert(failed, {
-                            name = item.name,
-                            currentCount = curItem.amount,
-                            targetCount = item.amount,
-                            triedToCraftCount = craftTask.count
-                        })
+                    if config.enabled then
+                        local craftResult = rs.craftItem(craftTask);
+                        if not craftResult then
+                            table.insert(failed, {
+                                name = item.name,
+                                currentCount = curItem.amount,
+                                targetCount = item.amount,
+                                triedToCraftCount = craftTask.count
+                            })
+                        end
+                    else
+                        print(textutils.serialise(craftTask))
                     end
                 end
             end
@@ -78,9 +85,9 @@ while true do
         for i = 1, failedLen do
             local line = 2+i
             monitor.setCursorPos(monWidth-(fullAmountLen), line)
-            monitor.write(string.format("%s/%s", failed[i].currentCount, failed[i].targetCount))
+            monitor.write(string.format("%s/%s", wrapNum(failed[i].currentCount), wrapNum(failed[i].targetCount)))
             monitor.setCursorPos(monWidth-(fullAmountLen + wrapping + failedToCraftAmountLen), 1)
-            monitor.write(string.format("%s", failed[i].triedToCraftCount))
+            monitor.write(string.format("%s", wrapNum(failed[i].triedToCraftCount)))
             monitor.setCursorPos(1, line)
             monitor.write(string.sub(string.format("%s", failed[i].name), 1, subDividelen))
         end
