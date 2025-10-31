@@ -89,7 +89,7 @@ while true do
             monitor.setCursorPos(monWidth-(fullAmountLen + wrapping + failedToCraftAmountLen), 1)
             monitor.write(string.format("%s", wrapNum(failed[i].triedToCraftCount)))
             monitor.setCursorPos(1, line)
-            monitor.write(string.sub(string.format("%s", failed[i].name), 1, subDividelen))
+            monitor.write(string.sub(string.gmatch(string.format("%s", failed[i].name), ".-:(%w+)")(), 1, subDividelen-wrapping))
         end
     end
     sleep(1)
