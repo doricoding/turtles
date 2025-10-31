@@ -1,4 +1,5 @@
 local rs = peripheral.find("rsBridge");
+
 local monitor = peripheral.find("monitor");
 
 monitor.setCursorBlink(false);
@@ -86,10 +87,10 @@ while true do
             local line = 2+i
             monitor.setCursorPos(monWidth-(fullAmountLen), line)
             monitor.write(string.format("%s/%s", wrapNum(failed[i].currentCount), wrapNum(failed[i].targetCount)))
-            monitor.setCursorPos(monWidth-(fullAmountLen + wrapping + failedToCraftAmountLen), 1)
+            monitor.setCursorPos(monWidth-(fullAmountLen + wrapping + failedToCraftAmountLen), line)
             monitor.write(string.format("%s", wrapNum(failed[i].triedToCraftCount)))
             monitor.setCursorPos(1, line)
-            monitor.write(string.sub(string.gmatch(string.format("%s", failed[i].name), ".-:(%w+)")(), 1, subDividelen-wrapping))
+            monitor.write(string.sub(string.gmatch(string.format("%s", failed[i].name), ".-:(%S+)")(), 1, subDividelen-wrapping))
         end
     end
     sleep(1)
