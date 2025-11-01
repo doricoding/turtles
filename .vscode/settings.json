@@ -9,6 +9,9 @@
 		"fs",
 		"shell",
 		"peripheral",
-		"textutils"
+		"textutils",
+		"image",
+		"display",
+		"bit"
 	]
 }

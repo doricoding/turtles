@@ -195,8 +195,8 @@ function toString(data)
 end
 
 -- Load and parse a config file
-function load(name)
-	local file = fs.open(CONFIG_PATH.."/"..name..CONFIG_FILE_EXTENTION, "r");
+function load(entry)
+	local file = fs.open(CONFIG_PATH.."/"..entry..CONFIG_FILE_EXTENTION, "r");
 	-- Config file doesn't exist
 	if file == nil then
 		return nil;
@@ -207,16 +207,16 @@ function load(name)
 	return parse(content);
 end
 -- Save table into config file
-function save(name, data)
+function save(entry, data)
 	assert(data, "Missing data argument!");
 	local content = toString(data);
-	local file = fs.open(CONFIG_PATH.."/"..name..CONFIG_FILE_EXTENTION, "w");
+	local file = fs.open(CONFIG_PATH.."/"..entry..CONFIG_FILE_EXTENTION, "w");
 	file.write(content);
 	file.close();
 end
 -- Define the default config for a program
-function default(name, data)
-	if fs.exists(CONFIG_PATH.."/"..name..CONFIG_FILE_EXTENTION) == false then
-		save(name, data);
+function default(entry, data)
+	if fs.exists(CONFIG_PATH.."/"..entry..CONFIG_FILE_EXTENTION) == false then
+		save(entry, data);
 	end
 end

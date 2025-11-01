@@ -3,14 +3,13 @@ local MIXIN_DIR = "/api/mixin";
 local API_DIR = "/api";
 local AUTORUN_DIR = "/autorun";
 
-local apisToUnload = {
-    "help",
-    "rednet"
-};
-
 -- Force startup to start in root
-shell.run("cd /")
+shell.run("cd /");
 
+local apisToUnload = {
+	"help",
+	"rednet"
+};
 -- Unload default APIs
 for _, api in pairs(apisToUnload) do
 	os.unloadAPI(api);
@@ -31,11 +30,11 @@ end
 
 -- Run Autorun scripts
 if fs.exists(AUTORUN_DIR) then
-    for _, file in pairs(fs.list(AUTORUN_DIR)) do
-        shell.run(fs.combine(AUTORUN_DIR, file));
-    end
+	for _, file in pairs(fs.list(AUTORUN_DIR)) do
+		shell.run(fs.combine(AUTORUN_DIR, file));
+	end
 else
-    print("No autorun directory found");
+	print("No autorun directory found");
 end
 
 -- Set starting directory to HOME for convenience

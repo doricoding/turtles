@@ -1,16 +1,17 @@
 [
-    "startup.lua",
+	"startup.lua",
 
-    "home/scan.lua",
-    "home/format_config_file.lua",
+	"home/scan.lua",
+	"home/format_config_file.lua",
 
-    "api/mixin/math.lua",
-    "api/mixin/peripheral.lua",
+	"api/mixin/math.lua",
+	"api/mixin/peripheral.lua",
 
-    "api/config.lua",
-    "api/image.lua",
+	"api/config.lua",
+	"api/image.lua",
+	"api/display.lua",
 
-    "service/gms.lua",
-    "service/player_relay_with_greet.lua",
-    "service/simple_autocraft_scheduler.lua"
+	"service/gms.lua",
+	"service/player_relay_with_greet.lua",
+	"service/simple_autocraft_scheduler.lua"
 ]

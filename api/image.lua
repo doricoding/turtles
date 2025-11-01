@@ -1,3 +1,5 @@
+FILE_SIGNATURE = "BLIT";
+
 -- Helper function
 local function fillRow(image, from, to, y, color)
 	y = math.round(y);
@@ -27,8 +29,72 @@ local function createImageInstance()
 		_data = {}
 	};
 
-	-- Load (todo)
-	-- Save (todo)
+	-- Save image to file
+	function image:save(file_path)
+		local file = fs.open(file_path, "wb");
+		-- File signature
+		file.write(FILE_SIGNATURE);
+		-- Width
+		file.write(bit.band(bit.brshift(image.width, 8), 0xFF));
+		file.write(bit.band(image.width, 0xFF));
+		-- Height
+		file.write(bit.band(bit.brshift(image.height, 8), 0xFF));
+		file.write(bit.band(image.height, 0xFF));
+
+		local flags = {
+			contains_transparency = false;
+			-- custom_palette = false; -- (TODO)
+		};
+
+		-- Palette (TODO)
+
+		-- Split image data to sections
+		local alphas = {};
+		local pixels = {};
+		for i = 0, image.width*image.height - 1 do
+			local x, y = i%image.width + 1, math.floor(i/image.width) + 1;
+
+			alphas[i+1] = image._data[y][x] ~= nil;
+			if alphas[i+1] then
+				pixels[#pixels+1] = math.floor(math.log(image._data[y][x], 2));
+			else
+				flags.contains_transparency = true;
+			end
+		end
+
+		-- Write flags
+		local flag_byte = 0;
+		local flag_index = 0;
+		for _, flag in pairs(flags) do
+			if flag then
+				flag_byte = bit.bor(flag_byte, bit.blshift(1, flag_index));
+			end
+			flag_index = flag_index + 1;
+		end
+		file.write(flag_byte);
+		-- Write alpha section
+		if flags.contains_transparency then
+			for i = 1, image.width*image.height, 8 do
+				local byte = 0;
+				for j = 0, 7 do
+					if alphas[i+j] then
+						byte = bit.bor(byte, bit.blshift(1, j));
+					end
+				end
+				file.write(byte);
+			end
+		end
+		-- Write pixel section
+		for i = 1, #pixels, 2 do
+			local byte = pixels[i];
+			if pixels[i+1] then
+				byte = bit.bor(byte, bit.blshift(pixels[i+1], 4));
+			end
+			file.write(byte);
+		end
+
+		file.close();
+	end
 	-- Clone an image
 	function image:clone()
 		local new_image = createImageInstance();
@@ -79,11 +145,9 @@ local function createImageInstance()
 		end
 	end
 	function image:rectangle(x1, y1, x2, y2, color, fill)
-		if fill == nil then
-			fill = true;
-		end
+		 fill = fill or true;
 
-		-- Switch numbers
+		-- Switch sides
 		if x1 > x2 then
 			x1, x2 = x2, x1;
 		end
@@ -94,7 +158,7 @@ local function createImageInstance()
 		x1 = math.max(math.round(x1), 1);
 		y1 = math.max(math.round(y1), 1);
 		-- Return early if possition is out of bounds
-		if x1 >= self.width or y1 >= self.height then
+		if x1 > self.width or y1 > self.height then
 			return;
 		end
 		-- Clamp end positions
@@ -224,6 +288,55 @@ function create(width, height, bg_color)
 			for x = 1, width do
 				image._data[y][x] = bg_color;
 			end
+		end
+	end
+
+	return image;
+end
+function load(file_path)
+	local file = fs.open(file_path, "rb");
+	-- Check file signature
+	if file.read(#FILE_SIGNATURE) ~= FILE_SIGNATURE then
+		file.close();
+		error("File signature doesn't match!", 2);
+	end
+
+	local image = createImageInstance();
+
+	-- Get size
+	local width = file.read(2);
+	image.width = bit.bor(bit.blshift(width:byte(1), 8), width:byte(2));
+	local height = file.read(2);
+	image.height = bit.bor(bit.blshift(height:byte(1), 8), height:byte(2));
+	-- Get flags
+	local flag_byte = file.read(1):byte(1);
+	local flags = {
+		contains_transparency = bit.band(flag_byte, 1) > 0;
+	}
+
+	-- Construct image
+	local alphas;
+	if flags.contains_transparency then
+		alphas = file.read(math.ceil(image.width*image.height / 8));
+	end
+	local pixels = file.readAll();
+	file.close()
+
+	local pixel_index = 0;
+	for y = 1, image.height do
+		image._data[y] = {};
+		for x = 1, image.width do
+			if flags.contains_transparency then
+				local alpha_index = x + (y-1)*image.width - 1;
+				local alpha_byte = alphas:byte(math.floor(alpha_index/8) + 1);
+				if bit.band(alpha_byte, 2 ^ (alpha_index%8)) == 0 then
+					goto skip_pixel;
+				end
+			end
+			local pixel_byte = pixels:byte(math.floor(pixel_index/2) + 1);
+			image._data[y][x] = 2 ^ bit.band(bit.brshift(pixel_byte, (pixel_index%2) * 4), 0xF);
+			pixel_index = pixel_index + 1;
+			::skip_pixel::
 		end
 	end
 
