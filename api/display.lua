@@ -71,7 +71,7 @@ function wrapTarget(target)
 				error("TODO: compact pixels display mode");
 			else
 				for y = sy1, sy2 do
-					target.setCursorPos(1, y);
+					target.setCursorPos(sx1, y);
 					for x = sx1, sx2 do
 						local color = target.canvas._data[y][x];
 						target.setBackgroundColor(color);

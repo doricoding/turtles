@@ -137,12 +137,13 @@ local function toStringInner(data, indentation_level)
 	if array_index_counter > 0 then
 		for i = 1, array_index_counter do
 			if data[i] == nil then
-				break;
+				goto break_check;
 			end
 		end
 
 		is_array = true;
 	end
+	::break_check::
 
 	local content;
 	if is_array then
