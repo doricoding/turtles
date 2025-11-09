@@ -1,0 +1,10 @@
+[
+	"startup.lua",
+
+	"api/mixin/math.lua",
+	"api/mixin/peripheral.lua",
+
+	"api/config.lua",
+	"api/image.lua",
+	"api/display.lua"
+]

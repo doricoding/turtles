@@ -1,7 +1,9 @@
 local args = { ... };
 
 local WGET = "wget";
-local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/";
+local BRANCH = "main";
+local PROJECT = "doricoding/turtles";
+local URL = string.format("https://raw.githubusercontent.com/%s/refs/heads/%s/", PROJECT, BRANCH);
 local FILENAME_STRUCTURE = "structure.json";
 
 local installerPath = shell.getRunningProgram()
@@ -25,7 +27,7 @@ local function getFiles()
     local structure = textutils.unserialiseJSON(file.readAll());
     file.close();
 
-    for i, v in ipairs(structure) do
+    for _, v in ipairs(structure) do
         local command = WGET.." "..URL..v.." "..v;
         shell.run(command);
     end
@@ -38,7 +40,7 @@ if #rootFiles-2 > 0 then
     print("Files found in root");
     while true do
         print("Type (Y/N) to delete all found files on the computer");
-        local event, key, is_held = os.pullEvent("key");
+        local _, key, _ = os.pullEvent("key");
         if isInList(key, {keys.y, keys.z, keys.n}) then
             if isInList(key, {keys.y, keys.z}) then
                 for _, v in ipairs(rootFiles) do
@@ -50,9 +52,9 @@ if #rootFiles-2 > 0 then
             else
                 while true do
                     print("Type (Y/N) to intall anyway");
-                    local event, key, is_held = os.pullEvent("key");
-                    if isInList(key, {keys.y, keys.z, keys.n}) then
-                        if isInList(key, {keys.y, keys.z}) then
+                    local _, key2, _ = os.pullEvent("key");
+                    if isInList(key2, {keys.y, keys.z, keys.n}) then
+                        if isInList(key2, {keys.y, keys.z}) then
                             getFiles();
                         else
                             print("Cancelling installation");
