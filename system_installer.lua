@@ -1,4 +1,4 @@
-local args = { ... };
+--local args = { ... };
 
 local WGET = "wget";
 local BRANCH = "main";
@@ -13,15 +13,6 @@ local desiredInstallerPath = "/system_installer.lua"
 if not fs.exists(desiredInstallerPath) then
     fs.copy(installerPath, desiredInstallerPath)
 end
-
-local function isInList(val, list)
-    local res = false;
-    for _, v in ipairs(list) do res = res or (v == val) end
-    return res;
-end
-
--- TODO: implement the file fetching from github
--- fetches file places it in /.tmp then it replaces the file if it exists already
 
 shell.run("cd /");
 shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
