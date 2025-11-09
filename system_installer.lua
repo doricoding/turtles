@@ -15,7 +15,7 @@ if not fs.exists(desiredInstallerPath) then
 end
 
 shell.run("cd /");
-shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
+shell.run(string.format("%s %s%s", WGET, URL, FILENAME_STRUCTURE));
 shell.run(string.format("mkdir %s", TMP));
 
 local file = fs.open(FILENAME_STRUCTURE, "r");
