@@ -34,7 +34,7 @@ file.close();
 for _, entry in pairs(structure) do
 	local command = string.format("%s %s%s %s/%s", WGET, URL, entry, TMP, entry);
 	shell.run(command);
-	if fs.exsists(entry) then
+	if fs.exists(entry) then
 		shell.run(string.format("rm %s", entry));
 		shell.run(string.format("mv %s/%s %s", TMP, entry, entry));
 	else

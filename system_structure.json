@@ -1,6 +1,8 @@
 [
 	"startup.lua",
 
+	"installer.lua",
+
 	"api/mixin/math.lua",
 	"api/mixin/peripheral.lua",
 
