@@ -27,10 +27,8 @@ for _, entry in pairs(structure) do
 	shell.run(command);
 	if fs.exists(entry) then
 		shell.run(string.format("rm %s", entry));
-		shell.run(string.format("mv %s/%s %s", TMP, entry, entry));
-	else
-		shell.run(string.format("mv %s/%s %s", TMP, entry, entry));
 	end
+	shell.run(string.format("mv %s/%s %s", TMP, entry, entry));
 end
 
 shell.run(string.format("rm %s", TMP));
