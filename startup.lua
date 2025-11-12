@@ -48,5 +48,3 @@ else
 	shell.run(string.format("cd %s", HOME_DIR));
 end
 
--- Set starting directory to HOME for convenience
---shell.run("cd "..HOME_DIR);
