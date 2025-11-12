@@ -23,7 +23,10 @@ local function isInList(val, list)
 end
 
 shell.run("cd /");
-shell.run(string.format("%s %s%s", WGET, URL, FILENAME_STRUCTURE));
+
+if not fs.exists(FILENAME_STRUCTURE) then
+	shell.run(string.format("%s %s%s", WGET, URL, FILENAME_STRUCTURE));
+end
 
 if #args > 0 then
 	-- TODO: implement argument parser
@@ -33,8 +36,9 @@ else
 	local file = fs.open(FILENAME_STRUCTURE, "r");
 	local structure = textutils.unserialiseJSON(file.readAll());
 	file.close();
+	term.write("> ");
 	local input = read(nil, nil, function(a_v)
-		return completion.choice(a_v, structure)
+		return completion.choice(a_v, structure);
 	end, nil);
 	if input ~= nil and isInList(input, structure) then
 		shell.run(string.format("%s %s%s %s/%s", WGET, URL, input, TMP, input));
@@ -43,6 +47,6 @@ else
 		end
 		shell.run(string.format("mv %s/%s %s", TMP, input, input));
 	else
-		print(string.format("%s: File not found in structure or is nil. If you want file that is not in structure use --help"));
+		print(string.format("%s: File not found in structure or is nil. If you want file that is not in structure use --help", input));
 	end
 end
