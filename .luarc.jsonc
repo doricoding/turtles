@@ -1,0 +1,11 @@
+{
+	"diagnostics": {
+		"globals": [
+			"keys",
+			"shell",
+			"os",
+			"textutils",
+			"fs"
+		]
+	}
+}

@@ -1,8 +1,13 @@
 local args = { ... };
 
+local completion = require("cc.completion");
+
 local WGET = "wget";
-local URL = "https://raw.githubusercontent.com/doricoding/turtles/refs/heads/main/";
+local BRANCH = "main";
+local PROJECT = "doricoding/turtles";
+local URL = string.format("https://raw.githubusercontent.com/%s/refs/heads/%s/", PROJECT, BRANCH);
 local FILENAME_STRUCTURE = "structure.json";
+local TMP = "/.tmp";
 
 local installerPath = shell.getRunningProgram()
 local desiredInstallerPath = "/installer.lua"
@@ -17,53 +22,31 @@ local function isInList(val, list)
     return res;
 end
 
-local function getFiles()
-    shell.run("cd /");
-    shell.run(WGET.." "..URL..FILENAME_STRUCTURE);
+shell.run("cd /");
 
-    local file = fs.open(FILENAME_STRUCTURE, "r");
-    local structure = textutils.unserialiseJSON(file.readAll());
-    file.close();
-
-    for i, v in ipairs(structure) do
-        local command = WGET.." "..URL..v.." "..v;
-        shell.run(command);
-    end
+if not fs.exists(FILENAME_STRUCTURE) then
+	shell.run(string.format("%s %s%s", WGET, URL, FILENAME_STRUCTURE));
 end
 
-local rootFiles = fs.list("/");
-
--- #rootFiles - rom - installer.lua
-if #rootFiles-2 > 0 then
-    print("Files found in root");
-    while true do
-        print("Type (Y/N) to delete all found files on the computer");
-        local event, key, is_held = os.pullEvent("key");
-        if isInList(key, {keys.y, keys.z, keys.n}) then
-            if isInList(key, {keys.y, keys.z}) then
-                for _, v in ipairs(rootFiles) do
-                    if not fs.isReadOnly(v) and not isInList(v, {"rom", "disk", installerPath}) then
-                        fs.delete(v);
-                    end
-                end
-                getFiles();
-            else
-                while true do
-                    print("Type (Y/N) to intall anyway");
-                    local event, key, is_held = os.pullEvent("key");
-                    if isInList(key, {keys.y, keys.z, keys.n}) then
-                        if isInList(key, {keys.y, keys.z}) then
-                            getFiles();
-                        else
-                            print("Cancelling installation");
-                        end
-                        break
-                    end
-                end
-            end
-            break
-        end
-    end
+if #args > 0 then
+	-- TODO: implement argument parser
+	print("not implemented yet!");
 else
-    getFiles();
+	print("Choose file to install");
+	local file = fs.open(FILENAME_STRUCTURE, "r");
+	local structure = textutils.unserialiseJSON(file.readAll());
+	file.close();
+	term.write("> ");
+	local input = read(nil, nil, function(a_v)
+		return completion.choice(a_v, structure);
+	end, nil);
+	if input ~= nil and isInList(input, structure) then
+		shell.run(string.format("%s %s%s %s/%s", WGET, URL, input, TMP, input));
+		if fs.exists(input) then
+			shell.run(string.format("rm %s", input));
+		end
+		shell.run(string.format("mv %s/%s %s", TMP, input, input));
+	else
+		print(string.format("%s: File not found in structure or is nil. If you want file that is not in structure use --help", input));
+	end
 end

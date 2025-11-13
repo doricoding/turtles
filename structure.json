@@ -1,16 +1,9 @@
 [
-	"startup.lua",
-
-	"home/scan.lua",
+	"home/avaritia_crafter.lua",
 	"home/format_config_file.lua",
-
-	"api/mixin/math.lua",
-	"api/mixin/peripheral.lua",
-
-	"api/config.lua",
-	"api/image.lua",
-	"api/display.lua",
-
+	"home/scan.lua",
+	
+	"service/celestial_manipulator_timeskip.lua",
 	"service/gms.lua",
 	"service/player_relay_with_greet.lua",
 	"service/simple_autocraft_scheduler.lua"
