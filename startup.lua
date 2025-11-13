@@ -44,7 +44,9 @@ if fs.exists(AUTORUN) then
 	end
 else
 	print("No autorun file found! Creating one ...");
-	-- TODO: make it create the autorun.json file
+	local file = fs.open(AUTORUN, "w");
+	file.write("[]");
+	file.close();
 	shell.run(string.format("cd %s", HOME_DIR));
 end
 
