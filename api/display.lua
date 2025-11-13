@@ -64,8 +64,8 @@ function wrapTarget(target)
 			-- Clamp positions
 			sx1 = math.max(math.round(sx1), 1);
 			sy1 = math.max(math.round(sy1), 1);
-			sx2 = math.max(math.round(sx2), screen_width);
-			sy2 = math.max(math.round(sy2), screen_height);
+			sx2 = math.min(math.round(sx2), screen_width);
+			sy2 = math.min(math.round(sy2), screen_height);
 
 			if compact then
 				error("TODO: compact pixels display mode");
