@@ -5,7 +5,11 @@
 			"shell",
 			"os",
 			"textutils",
-			"fs"
+			"fs",
+			"peripheral",
+			//"colours",
+			"colors",
+			"sleep"
 		]
 	}
 }
