@@ -10,11 +10,15 @@ local function ifnilretzero(val)
 	if val == nil then return 0 else return val end
 end
 
+local function getPeripName(val)
+	if type(val) == "string" then return val else return peripheral.getName(val) end
+end
+
 function getAllItemsCount(container)
 	local items = container.list();
 	local res = {};
 	for _, v in pairs(items) do
-		res[v.name] = ifnilretzero(v.name) + v.count;
+		res[v.name] = ifnilretzero(res[v.name]) + v.count;
 	end
 	return res;
 end
@@ -34,8 +38,7 @@ function getAllItemsSlotCounts(container)
 end
 
 function transfer(from, to, itemId, amount)
-	local destination = to;
-	if type(to) ~= "string" then destination = peripheral.getName(to); end
+	local destination = getPeripName(to);
 	local items = getAllItemsSlotCounts(from);
 	local fromSlots = {};
 	local destCount = amount;
@@ -62,3 +65,10 @@ function transfer(from, to, itemId, amount)
 	end
 end
 
+
+-- TODO: transfer to slot
+
+
+
+	
+end
