@@ -8,5 +8,6 @@
 
 	"api/config.lua",
 	"api/image.lua",
-	"api/display.lua"
+	"api/display.lua",
+	"api/items.lua"
 ]
