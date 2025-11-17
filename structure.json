@@ -2,6 +2,7 @@
 	"home/avaritia_crafter.lua",
 	"home/format_config_file.lua",
 	"home/scan.lua",
+	"home/item_spreader.lua",
 	
 	"service/celestial_manipulator_timeskip.lua",
 	"service/gms.lua",

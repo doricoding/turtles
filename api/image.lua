@@ -112,6 +112,9 @@ local function createImageInstance()
 		return new_image;
 	end
 	-- Resize image (todo)
+	-- function image:resize(width, height, sx, sy)
+
+	-- end
 
 	-- -- Convert color format (todo)
 	-- function image:toBlitFormat(color_palette)
@@ -227,9 +230,19 @@ local function createImageInstance()
 	end
 	function image:drawImage(image, x, y, dx, dy, sx, sy)
 		x, y = math.round(x), math.round(y);
-		dx, dy = math.floor(dx), math.floor(dy);
-		assert(dx >= 1, "Draw image delta x can't be nagative!");
-		assert(dy >= 1, "Draw image delta y can't be nagative!");
+		if dx ~= nil then
+			dx = math.floor(dx);
+			assert(dx >= 1, "Draw image delta x can't be nagative!");
+		else
+			dx = image.width;
+		end
+		if dy ~= nil then
+			dy = math.floor(dy);
+			assert(dy >= 1, "Draw image delta y can't be nagative!");
+		else
+			dy = image.height;
+		end
+
 		if x > self.width or y > self.height or x+dx < 1 or y+dy < 1 then
 			return;
 		end
